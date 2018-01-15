@@ -1,0 +1,7 @@
+@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+
+body {
+  font-size: 14px;
+  font-family: 'Roboto', 'sans-serif';
+  margin: 0;
+}

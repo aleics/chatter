@@ -1,0 +1,11 @@
+<div class="wrapper">
+  <div *ngIf="!isReady; else chatTemplate">
+    <mat-spinner
+      class="spinner"
+      [diameter]="35">
+    </mat-spinner>
+  </div>
+  <ng-template #chatTemplate>
+    <chat-message *ngFor="let message of messages" [message]="message"></chat-message>
+  </ng-template>
+</div>
