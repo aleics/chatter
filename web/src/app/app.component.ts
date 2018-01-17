@@ -1,13 +1,15 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MalihuScrollbarService, CustomScrollbarOptions } from 'ngx-malihu-scrollbar';
+import { ChatService } from './services';
+import { Subscription } from 'rxjs/Subscription';
+import { ChatEvent, ChatEventType } from './models';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.styl']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('chatContainer') private chatContainer: ElementRef;
 
   public scrollbarOptions: CustomScrollbarOptions = {
@@ -16,16 +18,39 @@ export class AppComponent implements OnInit, AfterViewInit {
     alwaysShowScrollbar: 1
   };
 
+  public chatReady = false;
+  public messages: string[] = [];
+
+  private subscription: Subscription;
+
   constructor(
-    private mScrollbarService: MalihuScrollbarService
-  ) {}
+    private mScrollbarService: MalihuScrollbarService,
+    chatService: ChatService
+  ) {
+    this.subscription = chatService.onEvent
+      .subscribe((chatEvent: ChatEvent) => this.handleEvent(chatEvent));
+  }
 
   ngOnInit() {
     this.scrollToBottom();
   }
 
-  ngAfterViewInit() {
-    this.scrollToBottom();
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  handleEvent(chatEvent: ChatEvent) {
+    switch (chatEvent.type) {
+      case ChatEventType.open:
+        this.chatReady = true;
+        break;
+      case ChatEventType.msg:
+        if (chatEvent.message) {
+          this.messages.push(chatEvent.message);
+          this.scrollToBottom();
+        }
+        break;
+    }
   }
 
   scrollToBottom() {

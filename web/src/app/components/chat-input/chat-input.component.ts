@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChatService } from '../../services';
 
 @Component({
@@ -7,6 +7,9 @@ import { ChatService } from '../../services';
   styleUrls: ['./chat-input.component.styl']
 })
 export class ChatInputComponent {
+  @Input()
+  public disabled = false;
+
   public value: string;
 
   constructor(

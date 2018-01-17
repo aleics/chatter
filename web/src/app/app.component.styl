@@ -3,13 +3,29 @@ $bgColor = #303030
 .chat-container
   height: calc(100vh - 64px)
   background-color: $bgColor
-  .chat
-    padding: 0 15px
+  padding: 0 15px
 
 .chat-input-container
   position: fixed
   bottom: 0
   width: calc(100% - 30px)
-  margin-left: 15px
   padding-top: 10px
   background-color: $bgColor
+
+.spinner
+  margin: auto
+  margin-top: 30px
+
+.toolbar
+  position: relative
+  z-index: 2
+  box-shadow: 0px 1px 3px 1px #101010
+
+  .fa.fa-exchange
+    margin-right: 5px
+
+.welcomeMessage
+  text-align: center
+  padding-top: 10px
+  color: #c4c4c3
+  font-size: 11px

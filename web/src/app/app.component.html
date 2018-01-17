@@ -10,10 +10,25 @@
   malihu-scrollbar
   class="chat-container"
   [scrollbarOptions]="scrollbarOptions">
-  <div class="chat">
-    <chat-body (newMessage)="scrollToBottom()"></chat-body>
+
+  <div *ngIf="!chatReady; else chatTemplate">
+    <mat-spinner
+      class="spinner"
+      [diameter]="35">
+    </mat-spinner>
   </div>
+
+  <ng-template #chatTemplate>
+    <div class="welcomeMessage">
+      Connection established
+    </div>
+    <chat-body
+      [messages]="messages">
+    </chat-body>
+  </ng-template>
+
   <div class="chat-input-container">
-    <chat-input></chat-input>
+    <chat-input [disabled]="!chatReady"></chat-input>
   </div>
-  </div>
+
+</div>
