@@ -1,6 +1,15 @@
+$bgColor = #303030
+
 .chat-container
-  height: 100%
-  background-color: #303030
   height: calc(100vh - 64px)
+  background-color: $bgColor
   .chat
-    height: calc(100% - 64px)
+    padding: 0 15px
+
+.chat-input-container
+  position: fixed
+  bottom: 0
+  width: calc(100% - 30px)
+  margin-left: 15px
+  padding-top: 10px
+  background-color: $bgColor

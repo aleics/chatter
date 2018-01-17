@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -11,6 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./chat-body.component.styl']
 })
 export class ChatBodyComponent implements OnDestroy {
+
+  @Output()
+  public newMessage = new EventEmitter<string>();
 
   private subscription: Subscription;
   private isReady = false;
@@ -31,6 +34,7 @@ export class ChatBodyComponent implements OnDestroy {
         const msg: string = _.get(chatEvent.event, 'data');
         if (msg) {
           this.messages.push(msg);
+          this.newMessage.emit(msg);
         }
         break;
     }

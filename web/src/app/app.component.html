@@ -5,11 +5,15 @@
   </span>
 </mat-toolbar>
 
-<div class="chat-container">
+<div
+  #chatContainer
+  malihu-scrollbar
+  class="chat-container"
+  [scrollbarOptions]="scrollbarOptions">
   <div class="chat">
-    <chat-body></chat-body>
+    <chat-body (newMessage)="scrollToBottom()"></chat-body>
   </div>
-  <div>
+  <div class="chat-input-container">
     <chat-input></chat-input>
   </div>
   </div>
