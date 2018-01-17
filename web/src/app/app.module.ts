@@ -36,8 +36,7 @@ import { appRoutes } from './app.routes';
     ChatService
   ],
   bootstrap: [
-    AppComponent,
-    ChatInputComponent
+    AppComponent
   ]
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ChatService, ChatEvent } from '../../services';
+import { ChatService } from '../../services';
 
 @Component({
   selector: 'chat-message',
@@ -8,5 +8,6 @@ import { ChatService, ChatEvent } from '../../services';
 })
 export class ChatMessageComponent {
   @Input() message: string;
+
   public date = new Date();
 }

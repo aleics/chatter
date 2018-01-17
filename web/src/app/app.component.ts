@@ -47,6 +47,8 @@ export class AppComponent implements OnInit, OnDestroy {
       case ChatEventType.msg:
         if (chatEvent.message) {
           this.messages.push(chatEvent.message);
+
+          // scroll to the bottom when receiving a new message
           this.scrollToBottom();
         }
         break;
