@@ -41,17 +41,32 @@ func (wsc *WSController) Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	addHostByConn(conn)
+
 	for {
 		messageType, p, err := conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		if err := conn.WriteMessage(messageType, p); err != nil {
-			log.Println(err)
-			return
+		if messageType == 8 {
+			// TODO: unregister chat host
+		} else {
+			if err = broadcastMessage(messageType, p); err != nil {
+				log.Println(err)
+				return
+			}
 		}
 	}
+}
+
+func broadcastMessage(messageType int, body []byte) error {
+	for _, chatHost := range chatHosts {
+		if err := chatHost.conn.WriteMessage(messageType, body); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func checkOrigin(r *http.Request) bool {
