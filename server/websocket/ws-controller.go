@@ -1,4 +1,4 @@
-package controllers
+package websocket
 
 import (
 	"log"
@@ -27,48 +27,25 @@ func NewWSController() *WSController {
 	}
 }
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin:     checkOrigin,
-}
-
 // Handler handles the new websocket request
-func (wsc *WSController) Handler(w http.ResponseWriter, r *http.Request) {
+func (wsc *WSController) Handler(hub *Hub, w http.ResponseWriter, r *http.Request) {
+	// upgrade the connection information
 	conn, err := wsc.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	addHostByConn(conn)
+	// initialize a new chat host and add it to the hub
+	chatHost := newChatHost(conn, hub)
+	hub.addHost(*chatHost)
 
-	for {
-		messageType, p, err := conn.ReadMessage()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		if messageType == 8 {
-			// TODO: unregister chat host
-		} else {
-			if err = broadcastMessage(messageType, p); err != nil {
-				log.Println(err)
-				return
-			}
-		}
-	}
+	// Handle chat host connection
+	chatHost.handle()
 }
 
-func broadcastMessage(messageType int, body []byte) error {
-	for _, chatHost := range chatHosts {
-		if err := chatHost.conn.WriteMessage(messageType, body); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
+// checkOrigin checks if the origin host from the HTTP request
+// is the same as the server host (ignoring if different port)
 func checkOrigin(r *http.Request) bool {
 	origin := r.Header["Origin"]
 	if len(origin) == 0 {

@@ -2,26 +2,31 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
-
-	"./controllers"
+	"./websocket"
 )
 
 func main() {
-	wsc := controllers.NewWSController()
+	startWebsocket()
+}
 
-	router := mux.NewRouter()
-	router.HandleFunc("/chat", wsc.Handler)
+func startWebsocket() {
+	// Initialize the websocket functionality for connection handling
+	wsc := websocket.NewWSController()
+	hub := websocket.NewHub()
+	addr := ":1234"
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:4200"},
-		AllowCredentials: true,
+	log.Println("websocket: instances started")
+
+	http.HandleFunc("/chat", func(w http.ResponseWriter, r *http.Request) {
+		wsc.Handler(hub, w, r)
 	})
 
-	handler := c.Handler(router)
+	log.Printf("websocket: listening into %s", addr)
 
-	http.ListenAndServe(":1234", handler)
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		log.Fatal(err)
+	}
 }

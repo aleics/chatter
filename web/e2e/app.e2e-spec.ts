@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('chat-web App', () => {
+describe('chatter-web App', () => {
   let page: AppPage;
 
   beforeEach(() => {
