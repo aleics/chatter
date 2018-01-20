@@ -39,7 +39,13 @@ func (c *ChatHost) handle() {
 			if err != nil {
 				ch <- err
 			}
-			if err = c.hub.broadcastMessage(messageType, p); err != nil {
+
+			msg, err := deserializeMessage(p)
+			if err != nil {
+				ch <- err
+			}
+
+			if err = c.hub.broadcastMessage(messageType, msg); err != nil {
 				ch <- err
 			}
 			// if successful, return nil. Otherwise the channel never sends
@@ -47,7 +53,7 @@ func (c *ChatHost) handle() {
 			ch <- nil
 		}(c)
 
-		// wait for
+		// wait until broadcasting done
 		if err := <-ch; err != nil {
 			log.Println(err)
 			return

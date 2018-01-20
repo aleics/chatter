@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ChatService } from '../../services';
+import { ChatMessage } from '../../models/chat-message.interface';
 
 @Component({
   selector: 'chat-message',
@@ -7,7 +8,7 @@ import { ChatService } from '../../services';
   styleUrls: ['./chat-message.component.styl']
 })
 export class ChatMessageComponent {
-  @Input() message: string;
+  @Input() message: ChatMessage;
 
   public date = new Date();
 }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ChatService } from '../../services';
+import { ChatMessage } from '../../models/chat-message.interface';
 
 @Component({
   selector: 'chat-input',
@@ -17,7 +18,11 @@ export class ChatInputComponent {
   ) {}
 
   sendMessage() {
-    this.chatService.send(this.value);
+    const message: ChatMessage = {
+      text: this.value
+    };
+
+    this.chatService.send(message);
     this.value = '';
   }
 }

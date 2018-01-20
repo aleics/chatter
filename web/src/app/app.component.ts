@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/co
 import { MalihuScrollbarService, CustomScrollbarOptions } from 'ngx-malihu-scrollbar';
 import { ChatService } from './services';
 import { Subscription } from 'rxjs/Subscription';
-import { ChatEvent, ChatEventType } from './models';
+import { ChatEvent, ChatEventType, ChatMessage } from './models';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
   };
 
   public chatReady = false;
-  public messages: string[] = [];
+  public messages: ChatMessage[] = [];
 
   private subscription: Subscription;
 

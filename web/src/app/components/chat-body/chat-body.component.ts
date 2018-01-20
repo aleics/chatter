@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ChatMessage } from '../../models/chat-message.interface';
 
 @Component({
   selector: 'chat-body',
@@ -8,7 +9,7 @@ import { Component, Input } from '@angular/core';
 export class ChatBodyComponent {
 
   @Input()
-  public messages: string[];
+  public messages: ChatMessage[];
 
   constructor() {}
 }

@@ -23,12 +23,16 @@ func (h *Hub) addHost(chatHost ChatHost) ChatHost {
 }
 
 // broadcastMessage sends the message to all the subscribed hosts
-func (h *Hub) broadcastMessage(messageType int, body []byte) error {
+func (h *Hub) broadcastMessage(messageType int, msg *Message) error {
 	errc := make(chan error)
 	for _, chatHost := range h.chatHosts {
 		// Writes message to all hosts asynchronously
 		go func(chatHost ChatHost) {
-			errc <- chatHost.conn.WriteMessage(messageType, body)
+			msgText, err := msg.serialize()
+			if err != nil {
+				errc <- err
+			}
+			errc <- chatHost.conn.WriteMessage(messageType, msgText)
 		}(chatHost)
 	}
 
