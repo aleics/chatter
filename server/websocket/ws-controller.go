@@ -38,10 +38,10 @@ func (wsc *WSController) Handler(hub *Hub, w http.ResponseWriter, r *http.Reques
 
 	// initialize a new chat host and add it to the hub
 	chatHost := newChatHost(conn, hub)
-	hub.addHost(*chatHost)
+	hub.subscribe <- chatHost
 
-	// Handle chat host connection
-	chatHost.handle()
+	// Handle chat host connection in a parallel worker
+	go chatHost.handle()
 }
 
 // checkOrigin checks if the origin host from the HTTP request

@@ -18,6 +18,9 @@ func startWebsocket() {
 	hub := websocket.NewHub()
 	addr := ":1234"
 
+	// start the hub
+	go hub.Run()
+
 	log.Println("websocket: instances started")
 
 	http.HandleFunc("/chat", func(w http.ResponseWriter, r *http.Request) {

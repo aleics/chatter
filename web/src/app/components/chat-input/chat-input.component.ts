@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { ChatService } from '../../services';
 import { ChatMessage } from '../../models/chat-message.interface';
 
+import * as _ from 'lodash';
+
 @Component({
   selector: 'chat-input',
   templateUrl: './chat-input.component.html',
@@ -18,12 +20,14 @@ export class ChatInputComponent {
   ) {}
 
   sendMessage() {
-    const message: ChatMessage = {
-      text: this.value,
-      user: this.user
-    };
+    if (!_.isEmpty(this.value)) {
+      const message: ChatMessage = {
+        text: this.value,
+        user: this.user
+      };
 
-    this.chatService.send(message);
-    this.value = '';
+      this.chatService.send(message);
+      this.value = '';
+    }
   }
 }

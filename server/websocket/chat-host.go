@@ -27,36 +27,32 @@ func newChatHost(conn *websocket.Conn, hub *Hub) *ChatHost {
 func (c *ChatHost) handle() {
 	// on closing the connection
 	defer func() {
-		c.hub.unregister(c)
+		c.hub.unsubscribe <- c
 		c.conn.Close()
 	}()
 
 	for {
 		// read and broadcast the different message asynchronously
-		ch := make(chan error)
-		go func(chatHost *ChatHost) {
-			messageType, p, err := c.conn.ReadMessage()
-			if err != nil {
-				ch <- err
-			}
-
-			msg, err := deserializeMessage(p)
-			if err != nil {
-				ch <- err
-			}
-
-			if err = c.hub.broadcastMessage(messageType, msg); err != nil {
-				ch <- err
-			}
-			// if successful, return nil. Otherwise the channel never sends
-			// a value and is not able to closing the goroutine
-			ch <- nil
-		}(c)
-
-		// wait until broadcasting done
-		if err := <-ch; err != nil {
+		msg, err := c.readMessage()
+		if err != nil {
 			log.Println(err)
 			return
 		}
+
+		c.hub.broadcast <- msg
 	}
+}
+
+// readMessage reads a message from the host connection
+func (c *ChatHost) readMessage() (hubMessage, error) {
+	var msg hubMessage
+
+	typ, body, err := c.conn.ReadMessage()
+	if err != nil {
+		return msg, err
+	}
+
+	msg = hubMessage{body, typ}
+
+	return msg, nil
 }
