@@ -5,15 +5,23 @@ import * as _ from 'lodash';
 export class ChatService {
 
   public onEvent = new EventEmitter<ChatEvent>();
+  public onOpen = new EventEmitter<void>();
 
   private socket: WebSocket;
 
   constructor() {
     this.socket = new WebSocket('ws://localhost:1234/chat');
 
-    this.socket.onopen = (event) => this.onEvent.emit({ event, type: ChatEventType.open });
-    this.socket.onmessage = (event) =>  this.onEvent.emit({ event, type: ChatEventType.msg, message: this.getMessage(event) });
+    this.socket.onopen = (event) => {
+      this.onOpen.emit();
+      this.onEvent.emit({ event, type: ChatEventType.open });
+    };
+
+    this.socket.onmessage = (event) =>
+      this.onEvent.emit({ event, type: ChatEventType.msg, message: this.getMessage(event) });
+
     this.socket.onclose = (event) =>  this.onEvent.emit({ event, type: ChatEventType.close });
+
     this.socket.onerror = (event) =>  this.onEvent.emit({ event, type: ChatEventType.error });
   }
 

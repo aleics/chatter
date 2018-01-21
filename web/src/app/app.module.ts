@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material.module';
@@ -8,7 +8,11 @@ import { MomentModule } from 'angular2-moment';
 import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
 
 import { AppComponent } from './app.component';
-import { ChatInputComponent, ChatBodyComponent, ChatMessageComponent } from './components';
+import { ChatInputComponent,
+         ChatBodyComponent,
+         ChatMessageComponent,
+         ChatLoginDialogComponent
+        } from './components';
 import { ChatService } from './services';
 import { appRoutes } from './app.routes';
 
@@ -17,11 +21,14 @@ import { appRoutes } from './app.routes';
     AppComponent,
     ChatInputComponent,
     ChatBodyComponent,
-    ChatMessageComponent
+    ChatMessageComponent,
+    ChatLoginDialogComponent
   ],
+  entryComponents: [ChatLoginDialogComponent],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
     MomentModule,
     MalihuScrollbarModule.forRoot(),

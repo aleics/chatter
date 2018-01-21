@@ -7,14 +7,7 @@ import (
 // Message contains the message information sent to the host
 type Message struct {
 	Text string `json:"text"`
-}
-
-// createMessage creates a new message instance from the body of
-// a websocket body message
-func createMessage(msg []byte) *Message {
-	return &Message{
-		Text: string(msg[:]),
-	}
+	User string `json:"user"`
 }
 
 // Serialize a chat message instance

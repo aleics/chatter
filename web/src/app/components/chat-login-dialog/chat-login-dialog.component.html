@@ -1,0 +1,17 @@
+<h4 mat-dialog-title>Who are you?</h4>
+<mat-dialog-content>
+  <form class="form-group" [formGroup]="dialogForm">
+    <mat-form-field>
+        <input
+          matInput
+          class="form-control"
+          formControlName="userName"
+          placeholder="User name"
+          autocomplete="off">
+    </mat-form-field>
+
+    <div class="buttonContainer">
+      <button mat-button color="accent" (click)="save()" (keyup.enter)="save()">Go!</button>
+    </div>
+  </form>
+</mat-dialog-content>
