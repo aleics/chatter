@@ -7,10 +7,12 @@ matrix:
         - go get github.com/gorilla/websocket
         - go get github.com/twinj/uuid
 
+
       before_script:
         - cd server/
 
-      script: go build server.go
+      script:
+        - go build server.go
 
     - language: node_js
 

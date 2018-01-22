@@ -54,7 +54,7 @@ func (h *Hub) broadcastMsg(msgType int, msg []byte) error {
 	for _, chatHost := range h.chatHosts {
 		// Writes message to all hosts asynchronously
 		go func(chatHost ChatHost) {
-			errc <- chatHost.conn.WriteMessage(msgType, msg)
+			errc <- chatHost.writeMessage(msgType, msg)
 		}(chatHost)
 	}
 

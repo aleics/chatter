@@ -41,8 +41,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
 
     this.subscriptions.push(
-      this.chatService.onEvent
-        .subscribe((chatEvent: ChatEvent) => this.handleMessageEvent(chatEvent))
+      this.chatService.onChatMessage
+        .subscribe((chatMessage: ChatMessage) => this.handleMessageEvent(chatMessage))
     );
 
     this.subscriptions.push(this.handleLogin());
@@ -76,17 +76,8 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  handleMessageEvent(chatEvent: ChatEvent) {
-    switch (chatEvent.type) {
-      case ChatEventType.msg:
-        if (chatEvent.message) {
-          this.messages.push(chatEvent.message);
-
-          // scroll to the bottom when receiving a new message
-          this.scrollToBottom();
-        }
-        break;
-    }
+  handleMessageEvent(chatMessage: ChatMessage) {
+    this.messages.push(chatMessage);
   }
 
   scrollToBottom() {

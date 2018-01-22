@@ -56,3 +56,7 @@ func (c *ChatHost) readMessage() (hubMessage, error) {
 
 	return msg, nil
 }
+
+func (c *ChatHost) writeMessage(msgType int, msg []byte) error {
+	return c.conn.WriteMessage(msgType, msg)
+}

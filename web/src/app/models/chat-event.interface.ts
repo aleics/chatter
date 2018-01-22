@@ -1,4 +1,4 @@
-import { ChatMessage } from './chat-message.interface';
+import { GlobalMessage } from './message.interface';
 
 export type ChatEventType = 'OPEN' | 'MSG' | 'CLOSE' | 'ERROR';
 export const ChatEventType = {
@@ -11,5 +11,5 @@ export const ChatEventType = {
 export interface ChatEvent {
   event: Event;
   type: ChatEventType;
-  message?: ChatMessage;
+  message?: GlobalMessage;
 }
