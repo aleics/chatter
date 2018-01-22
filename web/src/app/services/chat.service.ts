@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { ChatEvent, ChatEventType, GlobalMessage, ChatDataMessage, ChatMessage, MessageType } from '../models';
+import { ChatEvent, ChatEventType, GlobalMessage, ChatDataMessage, ChatMessage, MessageType, ConfigMessage } from '../models';
 import * as _ from 'lodash';
 @Injectable()
 export class ChatService {
@@ -7,22 +7,25 @@ export class ChatService {
   public onEvent = new EventEmitter<ChatEvent>();
   public onOpen = new EventEmitter<void>();
   public onChatMessage = new EventEmitter<ChatMessage>();
+  public onConfigMessage = new EventEmitter<ConfigMessage>();
 
   private socket: WebSocket;
 
   constructor() {
     this.socket = new WebSocket('ws://localhost:1234/chat');
 
-    this.socket.onopen = (event) => {
-      this.onOpen.emit();
-      this.onEvent.emit({ event, type: ChatEventType.open });
-    };
+    this.socket.onopen = this.handleOnOpen.bind(this);
 
     this.socket.onmessage = this.handleOnMessage.bind(this);
 
     this.socket.onclose = (event) =>  this.onEvent.emit({ event, type: ChatEventType.close });
 
     this.socket.onerror = (event) =>  this.onEvent.emit({ event, type: ChatEventType.error });
+  }
+
+  private handleOnOpen(event) {
+    this.onOpen.emit();
+    this.onEvent.emit({ event, type: ChatEventType.open });
   }
 
   private handleOnMessage(event) {
@@ -32,6 +35,9 @@ export class ChatService {
     switch (message.type) {
       case MessageType.chat:
         this.onChatMessage.emit(message as ChatMessage);
+        break;
+      case MessageType.config:
+        this.onConfigMessage.emit(message as ConfigMessage);
         break;
       default:
         console.warn('Message type not found');

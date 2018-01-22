@@ -9,12 +9,6 @@ const (
 	configMessageType = "CONFIG"
 )
 
-// Message is an interface that defines the functions of any message type
-type Message interface {
-	serialize() ([]byte, error)
-	deserializeMessage(msgText []byte) (Message, error)
-}
-
 // ChatMessage describes a message of the chat
 type ChatMessage struct {
 	MsgType string          `json:"type"`
@@ -27,7 +21,7 @@ func (m *ChatMessage) serialize() ([]byte, error) {
 }
 
 // Deserialize a body message to a chat message instance
-func deserializeMessage(msgText []byte) (ChatMessage, error) {
+func deserializeChatMessage(msgText []byte) (ChatMessage, error) {
 	var msg ChatMessage
 	if err := json.Unmarshal(msgText, &msg); err != nil {
 		return msg, err
@@ -39,4 +33,29 @@ func deserializeMessage(msgText []byte) (ChatMessage, error) {
 type ChatMessageData struct {
 	Text string `json:"text"`
 	User string `json:"user"`
+}
+
+// ConfigMessage describes a configuration message send to the host
+type ConfigMessage struct {
+	MsgType string            `json:"type"`
+	Data    ConfigMessageData `json:"data"`
+}
+
+// Serialize a chat message instance
+func (m *ConfigMessage) serialize() ([]byte, error) {
+	return json.Marshal(m)
+}
+
+// Deserialize a body message to a chat message instance
+func deserializeConfigMessage(msgText []byte) (ConfigMessage, error) {
+	var msg ConfigMessage
+	if err := json.Unmarshal(msgText, &msg); err != nil {
+		return msg, err
+	}
+	return msg, nil
+}
+
+// ConfigMessageData containes the information used on a config message
+type ConfigMessageData struct {
+	UUID string `json:"uuid"`
 }

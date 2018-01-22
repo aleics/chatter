@@ -10,7 +10,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/filter';
 
 import { ChatService } from './services';
-import { ChatEvent, ChatEventType, ChatMessage } from './models';
+import { ChatEvent, ChatEventType, ChatMessage, ConfigMessage } from './models';
 import { ChatLoginDialogComponent } from './components';
 
 @Component({
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public chatReady = false;
   public messages: ChatMessage[] = [];
   public userName: string;
+  public uuid: string;
 
   private connection = false;
   private subscriptions: Subscription[] = [];
@@ -46,6 +47,10 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(this.handleLogin());
+    this.subscriptions.push(
+      this.chatService.onConfigMessage
+        .subscribe((configMessage: ConfigMessage) => this.handleConfigEvent(configMessage))
+    );
   }
 
   ngOnInit() {
@@ -78,6 +83,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   handleMessageEvent(chatMessage: ChatMessage) {
     this.messages.push(chatMessage);
+  }
+
+  handleConfigEvent(configMessage: ConfigMessage) {
+    this.uuid = configMessage.data.uuid;
   }
 
   scrollToBottom() {

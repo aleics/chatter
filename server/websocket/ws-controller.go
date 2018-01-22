@@ -40,6 +40,8 @@ func (wsc *WSController) Handler(hub *Hub, w http.ResponseWriter, r *http.Reques
 	chatHost := newChatHost(conn, hub)
 	hub.subscribe <- chatHost
 
+	go chatHost.sendConfig()
+
 	// Handle chat host connection in a parallel worker
 	go chatHost.handle()
 }
