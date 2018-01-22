@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"./websocket"
+	"github.com/aleics/chatter/server/websocket"
 )
 
 func main() {
