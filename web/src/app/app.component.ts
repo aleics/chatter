@@ -29,8 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public chatReady = false;
   public messages: ChatMessage[] = [];
+  public userName: string;
 
-  private userName: string;
   private connection = false;
   private subscriptions: Subscription[] = [];
 
