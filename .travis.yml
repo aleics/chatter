@@ -1,0 +1,30 @@
+matrix:
+  include:
+    - language: go
+      go: master
+
+      before_install:
+        - go get github.com/gorilla/websocket
+        - go get github.com/twinj/uuid
+
+      before_script:
+        - cd server
+
+      script: go build server.go
+
+    - language: node_js
+
+      node_js:
+        - node # will use latest node
+
+      before_script: # commands to run before the build step
+        - cd web/
+        - npm install -g --silent @angular/cli
+
+      script: # the build step
+        - ng build --prod
+
+      notifications:
+        email: # only receive email when the build status changes (someone broke the build!)
+          on_failure: change
+          on_success: change
