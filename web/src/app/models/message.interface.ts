@@ -23,6 +23,7 @@ export type ChatMessage = Message<ChatDataMessage>;
 export class ChatDataMessage {
   text: string;
   user: string;
+  messageUuid: string;
 }
 
 export type ConfigMessage = Message<ConfigDataMessage>;

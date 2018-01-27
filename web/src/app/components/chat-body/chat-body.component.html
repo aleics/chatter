@@ -1,6 +1,7 @@
 <div class="wrapper">
   <chat-message
     *ngFor="let message of messages"
-    [message]="message">
+    [message]="message"
+    [uuid]="uuid">
   </chat-message>
 </div>

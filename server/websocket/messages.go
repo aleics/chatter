@@ -33,6 +33,7 @@ func deserializeChatMessage(msgText []byte) (ChatMessage, error) {
 type ChatMessageData struct {
 	Text string `json:"text"`
 	User string `json:"user"`
+	UUID string `json:"uuid"`
 }
 
 // ConfigMessage describes a configuration message send to the host

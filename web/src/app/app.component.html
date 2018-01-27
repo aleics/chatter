@@ -23,6 +23,7 @@
       Connection established
     </div>
     <chat-body
+      [uuid]="uuid"
       [messages]="messages">
     </chat-body>
   </ng-template>
@@ -30,7 +31,9 @@
   <div class="chat-input-container">
     <chat-input
       [disabled]="!chatReady"
-      [user]="userName">
+      [user]="userName"
+      [uuid]="uuid"
+      (send)="sendMessage($event)">
     </chat-input>
   </div>
 

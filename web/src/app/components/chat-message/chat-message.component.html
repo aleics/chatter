@@ -1,8 +1,13 @@
-<div class="msgContainer">
+<div class="msgContainer" [class.ownMessage]="isOwnMessage">
   <i class="fa fa-user-circle userIcon" aria-hidden="true"></i>
-  <span class="user">
-    {{ message.data.user }}
+  <span *ngIf="isOwnMessage; else userTemplate" class="user">
+    me
   </span>
+  <ng-template #userTemplate>
+    <span class="user">
+      {{ message.data.user }}
+    </span>
+  </ng-template>
   <div class="message">
     {{ message.data.text }}
   </div>

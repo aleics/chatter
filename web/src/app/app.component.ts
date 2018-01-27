@@ -10,7 +10,13 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/filter';
 
 import { ChatService } from './services';
-import { ChatEvent, ChatEventType, ChatMessage, ConfigMessage } from './models';
+import { ChatEvent,
+         ChatEventType,
+         ChatMessage,
+         ConfigMessage,
+         Message,
+         ChatDataMessage,
+         MessageType } from './models';
 import { ChatLoginDialogComponent } from './components';
 
 @Component({
@@ -95,5 +101,17 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setLoginModal(config: MatDialogConfig<any>) {
     return this.dialog.open(ChatLoginDialogComponent, config);
+  }
+
+  sendMessage(text: string) {
+    const messageData: ChatDataMessage = {
+      text: text,
+      user: this.userName,
+      messageUuid: this.uuid
+    };
+
+    this.chatService.sendMessage(
+      new Message(MessageType.chat, messageData)
+    );
   }
 }

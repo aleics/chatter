@@ -1,6 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { ChatService } from '../../services';
-import { ChatDataMessage, Message, MessageType } from '../../models/message.interface';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -12,24 +10,16 @@ import * as _ from 'lodash';
 export class ChatInputComponent {
   @Input() public disabled = false;
   @Input() public user: string;
+  @Input() public uuid: string;
+  @Output() public send: EventEmitter<string> = new EventEmitter();
 
-  public value: string;
+  value: string;
 
-  constructor(
-    private chatService: ChatService
-  ) {}
+  constructor() {}
 
   sendMessage() {
     if (!_.isEmpty(this.value)) {
-      const messageData: ChatDataMessage = {
-        text: this.value,
-        user: this.user
-      };
-
-      const message = new Message(MessageType.chat, messageData);
-
-      this.chatService.sendMessage(message);
-      this.value = '';
+      this.send.emit(this.value);
     }
   }
 }

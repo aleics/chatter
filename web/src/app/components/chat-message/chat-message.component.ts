@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ChatService } from '../../services';
 import { ChatMessage } from '../../models/message.interface';
 
 @Component({
@@ -8,7 +7,12 @@ import { ChatMessage } from '../../models/message.interface';
   styleUrls: ['./chat-message.component.styl']
 })
 export class ChatMessageComponent {
-  @Input() message: ChatMessage;
+  @Input() public message: ChatMessage;
+  @Input() public uuid: string;
 
-  public date = new Date();
+  date = new Date();
+
+  get isOwnMessage() {
+    return this.uuid === this.message.data.messageUuid;
+  }
 }

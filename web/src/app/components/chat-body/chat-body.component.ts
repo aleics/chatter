@@ -8,8 +8,8 @@ import { ChatMessage } from '../../models/message.interface';
 })
 export class ChatBodyComponent {
 
-  @Input()
-  public messages: ChatMessage[];
+  @Input() public messages: ChatMessage[];
+  @Input() public uuid: string;
 
   constructor() {}
 }
