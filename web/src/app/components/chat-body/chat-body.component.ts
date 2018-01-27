@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ChatMessage } from '../../models/chat-message.interface';
+import { ChatMessage } from '../../models/message.interface';
 
 @Component({
   selector: 'chat-body',

@@ -16,7 +16,7 @@ func startWebsocket() {
 	// Initialize the websocket functionality for connection handling
 	wsc := websocket.NewWSController()
 	hub := websocket.NewHub()
-	addr := ":1234"
+	addr := ":8080"
 
 	// start the hub
 	go hub.Run()

@@ -10,7 +10,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/filter';
 
 import { ChatService } from './services';
-import { ChatEvent, ChatEventType, ChatMessage } from './models';
+import { ChatEvent, ChatEventType, ChatMessage, ConfigMessage } from './models';
 import { ChatLoginDialogComponent } from './components';
 
 @Component({
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public chatReady = false;
   public messages: ChatMessage[] = [];
   public userName: string;
+  public uuid: string;
 
   private connection = false;
   private subscriptions: Subscription[] = [];
@@ -41,11 +42,15 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
 
     this.subscriptions.push(
-      this.chatService.onEvent
-        .subscribe((chatEvent: ChatEvent) => this.handleMessageEvent(chatEvent))
+      this.chatService.onChatMessage
+        .subscribe((chatMessage: ChatMessage) => this.handleMessageEvent(chatMessage))
     );
 
     this.subscriptions.push(this.handleLogin());
+    this.subscriptions.push(
+      this.chatService.onConfigMessage
+        .subscribe((configMessage: ConfigMessage) => this.handleConfigEvent(configMessage))
+    );
   }
 
   ngOnInit() {
@@ -76,17 +81,12 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  handleMessageEvent(chatEvent: ChatEvent) {
-    switch (chatEvent.type) {
-      case ChatEventType.msg:
-        if (chatEvent.message) {
-          this.messages.push(chatEvent.message);
+  handleMessageEvent(chatMessage: ChatMessage) {
+    this.messages.push(chatMessage);
+  }
 
-          // scroll to the bottom when receiving a new message
-          this.scrollToBottom();
-        }
-        break;
-    }
+  handleConfigEvent(configMessage: ConfigMessage) {
+    this.uuid = configMessage.data.uuid;
   }
 
   scrollToBottom() {

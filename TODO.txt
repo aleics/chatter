@@ -1,0 +1,6 @@
+// TODO:
+- Use a ngrx store for saving the configuration loaded on connect
+- Use a guard to wait until configuration is received, before loading the page
+- Create UUID in client (no need for sending it from server)
+- Move configuration into an extern server
+- Move websocket service logic into an external library

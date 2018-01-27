@@ -23,6 +23,23 @@ func newChatHost(conn *websocket.Conn, hub *Hub) *ChatHost {
 	}
 }
 
+func (c *ChatHost) sendConfig() {
+	msgData := ConfigMessageData{c.uuid.String()}
+	msg := ConfigMessage{configMessageType, msgData}
+
+	body, err := msg.serialize()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	err = c.writeMessage(1, body)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
 // handle the connection for the current chat host
 func (c *ChatHost) handle() {
 	// on closing the connection
@@ -55,4 +72,8 @@ func (c *ChatHost) readMessage() (hubMessage, error) {
 	msg = hubMessage{body, typ}
 
 	return msg, nil
+}
+
+func (c *ChatHost) writeMessage(msgType int, msg []byte) error {
+	return c.conn.WriteMessage(msgType, msg)
 }

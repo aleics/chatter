@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  chatter-server:
+    image: chatter-server
+    container_name: chatter-server
+    hostname: server
+    domainname: local-chatter.com
+    restart: always
+    networks:
+      chat-network:
+        ipv4_address: 172.10.0.2
+
+  chatter-web:
+    image: chatter-web
+    container_name: chatter-web
+    hostname: web
+    domainname: local-chatter.com
+    links:
+      - chatter-server
+    networks:
+      chat-network:
+        ipv4_address: 172.10.0.3
+
+
+networks:
+  chat-network:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.10.0.0/16
+         gateway: 172.10.0.1

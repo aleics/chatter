@@ -1,10 +1,10 @@
 <div class="msgContainer">
   <i class="fa fa-user-circle userIcon" aria-hidden="true"></i>
   <span class="user">
-    {{ message.user }}
+    {{ message.data.user }}
   </span>
   <div class="message">
-    {{ message.text }}
+    {{ message.data.text }}
   </div>
   <div class="timeContainer">{{ date | amDateFormat: 'YYYY-MM-DD HH:mm'}}</div>
 </div>
