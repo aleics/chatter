@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { ChatDataMessage, Message, MessageType, ChatMessage } from '../../models/message.interface';
 
 import * as _ from 'lodash';
 
@@ -20,6 +21,7 @@ export class ChatInputComponent {
   sendMessage() {
     if (!_.isEmpty(this.value)) {
       this.send.emit(this.value);
+      this.value = null; // reset value to empty
     }
   }
 }
