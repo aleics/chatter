@@ -12,7 +12,8 @@ export class ChatService {
   private socket: WebSocket;
 
   constructor() {
-    this.socket = new WebSocket('ws://172.10.0.3/chat');
+    // to use local-chatter.com as a domain name, it must be entered in /etc/hosts
+    this.socket = new WebSocket('ws://local-chatter.com/chat');
 
     this.socket.onopen = this.handleOnOpen.bind(this);
 
