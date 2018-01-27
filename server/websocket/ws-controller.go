@@ -44,31 +44,7 @@ func (wsc *WSController) Handler(hub *Hub, w http.ResponseWriter, r *http.Reques
 	go chatHost.handle()
 }
 
-// checkOrigin checks if the origin host from the HTTP request
-// is the same as the server host (ignoring if different port)
+// TODO: add really checkOrigin logic
 func checkOrigin(r *http.Request) bool {
-	// origin := r.Header["Origin"]
-	// if len(origin) == 0 {
-	// 	return true
-	// }
-	// u, err := url.Parse(origin[0])
-	// if err != nil {
-	// 	log.Println(err)
-	// 	return false
-	// }
-
-	// serverHost, _, err := net.SplitHostPort(u.Host)
-	// if err != nil {
-	// 	log.Println(err)
-	// 	return false
-	// }
-
-	// clientHost, _, err := net.SplitHostPort(r.Host)
-	// if err != nil {
-	// 	log.Println(err)
-	// 	return false
-	// }
-
-	// return serverHost == clientHost
 	return true
 }
