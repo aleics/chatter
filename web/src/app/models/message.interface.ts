@@ -1,3 +1,5 @@
+import { User } from './user.interface';
+
 export type MessageType = 'CHAT' | 'CONFIG';
 export const MessageType = {
   chat: 'CHAT' as MessageType,
@@ -22,8 +24,7 @@ export type ChatMessage = Message<ChatDataMessage>;
 
 export class ChatDataMessage {
   text: string;
-  user: string;
-  messageUuid: string;
+  user: User;
 }
 
 export type ConfigMessage = Message<ConfigDataMessage>;

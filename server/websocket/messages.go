@@ -7,7 +7,13 @@ import (
 const (
 	chatMessageType   = "CHAT"
 	configMessageType = "CONFIG"
+	logoutMessageType = "LOGOUT"
 )
+
+// Message is the interface for all types of messages
+type Message interface {
+	serialize() ([]byte, error)
+}
 
 // ChatMessage describes a message of the chat
 type ChatMessage struct {
@@ -16,7 +22,7 @@ type ChatMessage struct {
 }
 
 // Serialize a chat message instance
-func (m *ChatMessage) serialize() ([]byte, error) {
+func (m ChatMessage) serialize() ([]byte, error) {
 	return json.Marshal(m)
 }
 
@@ -32,7 +38,11 @@ func deserializeChatMessage(msgText []byte) (ChatMessage, error) {
 // ChatMessageData contains the information used on a chat message
 type ChatMessageData struct {
 	Text string `json:"text"`
-	User string `json:"user"`
+	User user   `json:"User"`
+}
+
+type user struct {
+	Name string `json:"name"`
 	UUID string `json:"uuid"`
 }
 
@@ -43,7 +53,7 @@ type ConfigMessage struct {
 }
 
 // Serialize a chat message instance
-func (m *ConfigMessage) serialize() ([]byte, error) {
+func (m ConfigMessage) serialize() ([]byte, error) {
 	return json.Marshal(m)
 }
 
@@ -59,4 +69,20 @@ func deserializeConfigMessage(msgText []byte) (ConfigMessage, error) {
 // ConfigMessageData containes the information used on a config message
 type ConfigMessageData struct {
 	UUID string `json:"uuid"`
+}
+
+// LogoutMessage is the message that will be sent, when a chat host unsubscribes
+type LogoutMessage struct {
+	MsgType string            `json:"type"`
+	Data    LogoutMessageData `json:"data"`
+}
+
+// LogoutMessageData contains the information used on a logout message
+type LogoutMessageData struct {
+	UUID string `json:"uuid"`
+}
+
+// Serialize a logout message instance
+func (m LogoutMessage) serialize() ([]byte, error) {
+	return json.Marshal(m)
 }

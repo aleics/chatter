@@ -105,9 +105,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   sendMessage(text: string) {
     const messageData: ChatDataMessage = {
-      text: text,
-      user: this.userName,
-      messageUuid: this.uuid
+      text,
+      user: {
+        name: this.userName,
+        uuid: this.uuid
+      }
     };
 
     this.chatService.sendMessage(

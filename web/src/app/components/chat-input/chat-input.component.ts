@@ -1,5 +1,4 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { ChatDataMessage, Message, MessageType, ChatMessage } from '../../models/message.interface';
 
 import * as _ from 'lodash';
 
@@ -15,8 +14,6 @@ export class ChatInputComponent {
   @Output() public send: EventEmitter<string> = new EventEmitter();
 
   value: string;
-
-  constructor() {}
 
   sendMessage() {
     if (!_.isEmpty(this.value)) {

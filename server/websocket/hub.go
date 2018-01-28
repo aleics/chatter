@@ -81,6 +81,7 @@ func (h *Hub) getIndexOfChatHost(chatHost *ChatHost) int {
 func (h *Hub) removeHost(chatHost *ChatHost) {
 	if i := h.getIndexOfChatHost(chatHost); i != -1 {
 		h.remove(i)
+		go chatHost.sendLogout()
 	}
 }
 

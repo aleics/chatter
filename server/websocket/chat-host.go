@@ -23,9 +23,17 @@ func newChatHost(conn *websocket.Conn, hub *Hub) *ChatHost {
 	}
 }
 
-func (c *ChatHost) sendConfig() {
-	msgData := ConfigMessageData{c.uuid.String()}
-	msg := ConfigMessage{configMessageType, msgData}
+func (c *ChatHost) getUUID() string {
+	return c.uuid.String()
+}
+
+func (c *ChatHost) sendLogout() {
+	msg := LogoutMessage{
+		logoutMessageType,
+		LogoutMessageData{
+			c.getUUID(),
+		},
+	}
 
 	body, err := msg.serialize()
 	if err != nil {
@@ -33,7 +41,24 @@ func (c *ChatHost) sendConfig() {
 		return
 	}
 
-	err = c.writeMessage(1, body)
+	c.hub.broadcast <- hubMessage{body, websocket.TextMessage}
+}
+
+func (c *ChatHost) sendConfig() {
+	msgData := ConfigMessageData{c.getUUID()}
+	msg := ConfigMessage{configMessageType, msgData}
+
+	c.sendMessage(msg)
+}
+
+func (c *ChatHost) sendMessage(msg Message) {
+	body, err := msg.serialize()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	err = c.writeMessage(websocket.TextMessage, body)
 	if err != nil {
 		log.Println(err)
 		return

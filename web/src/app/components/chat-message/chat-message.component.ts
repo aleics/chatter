@@ -13,6 +13,6 @@ export class ChatMessageComponent {
   date = new Date();
 
   get isOwnMessage() {
-    return this.uuid === this.message.data.messageUuid;
+    return this.uuid === this.message.data.user.uuid;
   }
 }

@@ -7,9 +7,6 @@ import { ChatMessage } from '../../models/message.interface';
   styleUrls: ['./chat-body.component.styl']
 })
 export class ChatBodyComponent {
-
   @Input() public messages: ChatMessage[];
   @Input() public uuid: string;
-
-  constructor() {}
 }
